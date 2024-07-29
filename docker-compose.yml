@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  wordpress:
+    image: wordpress:latest
+    container_name: newspaper_wordpress
+    ports:
+      - "8000:80"
+    volumes:
+      - ./wp-content:/var/www/html/wp-content
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: mysql
+      WORDPRESS_DB_PASSWORD: mysql
+      WORDPRESS_DB_NAME: newspaper
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    container_name: newspaper_db
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: newspaper
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+
+volumes:
+  db_data:
